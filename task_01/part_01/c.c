@@ -11,7 +11,6 @@ int main(int argc, char* argv[]) {
     int source = SOURCE;
     int destination = 0;
     MPI_Status status;
-    int index = 0;
 
     int send_buff[NUM_MESSG] ={1, 2, 3, 4, 5, 6, 7, 8, 9, 10};    
 
