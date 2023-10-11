@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "cstdlib": "c",
-        "system_error": "c"
+        "system_error": "c",
+        "unistd.h": "c"
     }
 }

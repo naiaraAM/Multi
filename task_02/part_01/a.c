@@ -9,8 +9,7 @@ int main(int argc, char* argv[]) {
     int rank; // rank of process
     int num_procs; // number of processes
     char message[MESSAGE_SIZE]; // message buffer
-    MPI_Status status;
-
+    
     // Start up MPI
     MPI_Init(&argc, &argv);
 
@@ -18,7 +17,7 @@ int main(int argc, char* argv[]) {
     MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
 
     MPI_Request requests[10];
-    MPI_Status stats[10];
+    MPI_Status status[10];
 
     if (rank == 0) {
         for (int i = 0; i < 10; i++) {
@@ -31,7 +30,7 @@ int main(int argc, char* argv[]) {
             sprintf(message, "[Process 0] Ping %d\n", i);
             MPI_Send(message, strlen(message) + 1,  MPI_CHAR, 1, i, MPI_COMM_WORLD);
         }
-        MPI_Waitall(10, requests, stats);
+        MPI_Waitall(10, requests, status);
     }
     else if (rank == 1) {
         for (int i = 0; i < 10; i++) {
@@ -43,7 +42,7 @@ int main(int argc, char* argv[]) {
             sprintf(message, "[Process 1] Pong %d\n", i);
             MPI_Send(message, strlen(message) + 1,  MPI_CHAR, 0, i, MPI_COMM_WORLD);
         }        
-        MPI_Waitall(10, requests, stats);
+        MPI_Waitall(10, requests, status);
     }    
     MPI_Finalize();
     return EXIT_SUCCESS;
