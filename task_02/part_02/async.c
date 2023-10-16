@@ -4,7 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define T            2000 // change value of T below and over threshold
+#define T            61 // change value of T below and over threshold
 
 int main(int argc, char* argv[]) {
     int rank; // rank of process
