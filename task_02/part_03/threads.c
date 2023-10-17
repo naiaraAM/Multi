@@ -1,6 +1,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 
 #define  P  2
 
@@ -46,21 +47,26 @@ void * trapez (void * argu)
     int i;
 
     // entrada de datos
+    /*
     printf("Límite inferior: ");
     scanf("%f", &a);
     printf("Límite superior: ");
     scanf("%f", &b);
     printf("Número de trapezoides: ");
     scanf("%d", &n);
+    */
+    scanf("%f %f %d", &a, &b, &n);
 
     h = (b - a) / n;
     rodaja = n / P;
 
+    clock_t t = clock();
     for(i = 0; i < P; i++) {
         tra[i].inicio = a + i * rodaja * h;
         tra[i].fin = tra[i].inicio + rodaja * h;
     //  printf("inicio y fin de %d son %f - %f \n", i, tra[i].inicio, tra[i].fin);
     }
+
     for(i = 0; i < P; i++)
         if (pthread_create(&th[i], NULL, trapez, &tra[i]) != 0)
         perror("error del thread uno");
@@ -69,7 +75,9 @@ void * trapez (void * argu)
         perror("join error 1");
     for(i = 0; i < P; i++)
         total += tra[i].integral;
+    t = clock() - t;
     printf("Con %d trapezoides la estimacion es de %f\n", n, total);
+    printf("[Total time] %f\n", ((double) t) / CLOCKS_PER_SEC);
 }
 
 float f(float x) {
