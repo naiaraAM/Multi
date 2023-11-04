@@ -2,22 +2,12 @@
 #include <math.h>
 #include <time.h>
 
+float f(float x);
+
 int main()  {
     float a, b, h, x, integral;
     int n, i;
-
-    /* definicion de la funcion */
-    float f(float x);
-
-    // entrada de datos
-    /*
-    printf("Límite inferior: ");
-    scanf("%f", &a);
-    printf("Límite superior: ");
-    scanf("%f", &b);
-    printf("Número de trapezoides: ");
-    scanf("%d", &n);
-    */
+    
     scanf("%f %f %d", &a, &b, &n);
 
     h = (b - a) / n;
@@ -32,7 +22,6 @@ int main()  {
     integral = integral * h;
     t = clock() - t;
     printf("[Total time] %f\n", ((double) t) / CLOCKS_PER_SEC);
-    //printf("Con %d trapezoides la estimacion es de %f\n", n, integral);
 }
 
 float f(float x) {

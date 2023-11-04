@@ -46,15 +46,6 @@ void * trapez (void * argu)
     void       *st[P];
     int i;
 
-    // entrada de datos
-    /*
-    printf("Límite inferior: ");
-    scanf("%f", &a);
-    printf("Límite superior: ");
-    scanf("%f", &b);
-    printf("Número de trapezoides: ");
-    scanf("%d", &n);
-    */
     scanf("%f %f %d", &a, &b, &n);
 
     h = (b - a) / n;
@@ -64,7 +55,6 @@ void * trapez (void * argu)
     for(i = 0; i < P; i++) {
         tra[i].inicio = a + i * rodaja * h;
         tra[i].fin = tra[i].inicio + rodaja * h;
-    //  printf("inicio y fin de %d son %f - %f \n", i, tra[i].inicio, tra[i].fin);
     }
 
     for(i = 0; i < P; i++)

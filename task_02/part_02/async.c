@@ -4,8 +4,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#define T            61 // change value of T below and over threshold
-
 int main(int argc, char* argv[]) {
     int rank; // rank of process
     int num_procs; // number of processes
@@ -17,10 +15,17 @@ int main(int argc, char* argv[]) {
 
     double start_time = 0;
     double fin_time = 0;
-
+    if (argc != 2)
+    {
+        printf("Wrong number of arguments\n");
+        printf("Usage: %s <T>\n", argv[0]);
+        printf("T - threshold\n");
+        return EXIT_FAILURE;
+    }
+    
+    int T = atoi(argv[1]); // size of message
     int* message = (int*)malloc(T * sizeof(int));
 
-    start_time = MPI_Wtime();
     // Start up MPI
     MPI_Init(&argc, &argv);
 
@@ -53,10 +58,9 @@ int main(int argc, char* argv[]) {
     }
     MPI_Waitall(2, requests, status);   
     MPI_Finalize();
-    fin_time = MPI_Wtime();
-    if (rank == 1) {
+    if (rank == 1) { // measure only over rank 1
         printf("Execution time: %lf\n", fin_time - start_time);
     }
-    free(message);
+    free(message); // free memory
     return EXIT_SUCCESS;
 }

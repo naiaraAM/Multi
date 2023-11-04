@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <math.h>
-
 #include "mpi.h"
+
+float trapez(float inicio, float fin, int rodaja, float h);
+float f(float x);
 
 int main(int argc, char** argv)  
 {
@@ -13,8 +15,6 @@ int main(int argc, char** argv)
     MPI_Status status;
     double start_time;
     double fin_time;
-
-    float trapez(float inicio, float fin, int rodaja, float h);
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &yo);
@@ -29,7 +29,6 @@ int main(int argc, char** argv)
     MPI_Bcast(&a, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&b, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD); // Espera a que todos los procesos hayan recibido los valores.
 
     h = (b - a) / n;
     rodaja = n / p;
@@ -37,18 +36,14 @@ int main(int argc, char** argv)
     fin = inicio + rodaja * h;
     start_time = MPI_Wtime();
     integral = trapez(inicio, fin, rodaja, h);
-    fin_time = MPI_Wtime();
-
-    //printf("Soy %d inicio y fin son %f - %f integral ini es %f h %f\n", yo, inicio, fin, integral, h);
-    
+    fin_time = MPI_Wtime();    
 
     if (yo == 0) {
         total = integral;
-        for(origen = 1; origen < p; origen++) {
+        for (origen = 1; origen < p; origen++) {
         MPI_Recv(&integral, 1, MPI_FLOAT, origen, tag, MPI_COMM_WORLD, &status);
         total += integral;
         }
-        //printf("Con %d trapezoides la estimacion es de %f\n", n, total);
         printf("\n[Total time] %lf\n\n", fin_time - start_time);
         printf("[Deviation] %lf\n", fabs(total));
     } else {
