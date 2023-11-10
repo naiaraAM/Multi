@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 {
     if (argc != 3)
     {
-        perror("ERROR: Invalid number of arguments.\n");
+        perror("ERRAR: Invalid number of arguments.\n");
         perror("Usage: ./matrix_gather <C> <F>\n");
         perror("C - number of columns\n");
         perror("F - number of rows\n");
