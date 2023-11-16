@@ -34,14 +34,11 @@ int main(int argc, char* argv[])  {
         buff[0] = a;
         buff[1] = b;
         buff[2] = n;
-        MPI_Bcast(buff, 3, MPI_FLOAT, root, MPI_COMM_WORLD);
-    } else {
-        MPI_Bcast(buff, 3, MPI_FLOAT, root, MPI_COMM_WORLD);
-        a = buff[0];
-        b = buff[1];
-        n = buff[2];
     }
-
+    MPI_Bcast(&a, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&b, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&n, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
+    
     h = (b - a) / n;
     rodaja = n / num_procs;
     inicio = a + rank * rodaja * h;
@@ -52,7 +49,6 @@ int main(int argc, char* argv[])  {
 
     if (rank == root)
     {
-
         total = integral;
         for (origen = 1; origen < num_procs; origen++) {
         MPI_Recv(&integral, 1, MPI_FLOAT, origen, tag, MPI_COMM_WORLD, MPI_STATUS_IGNORE);

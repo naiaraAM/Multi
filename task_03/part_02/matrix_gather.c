@@ -38,7 +38,8 @@ int main (int argc, char* argv[])
         if (F % num_procs != 0)
         {
             perror("ERROR: C is not divisible by the number of processes.");
-            exit(1);
+            MPI_Finalize();
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -48,14 +49,16 @@ int main (int argc, char* argv[])
     matrix = (int**) malloc(num_rows_per_process * sizeof(int*));
     if (matrix == NULL) {
         fprintf(stderr, "Failed to allocate memory for 'matrix'.\n");
-        exit(1);
+        MPI_Finalize();
+        exit(EXIT_FAILURE);
     }
     for (int i = 0; i < num_rows_per_process; i++)
     {
         matrix[i] = (int*) malloc(C * sizeof(int));
         if (matrix[i] == NULL) {
             fprintf(stderr, "Failed to allocate memory for 'matrix[%d]'.\n", i);
-            exit(1);
+            MPI_Finalize();
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -84,12 +87,23 @@ int main (int argc, char* argv[])
     }
     
 
-    if (rank == 0)
+    for (int i = 0; i < num_procs; i++)
     {
-        printf("Result: ");
-        print_row(vector_result_global, F);
+        if (i == rank)
+        {
+            printf("Rank: %d\n", rank);
+            print_row(vector_result_global, F);
+        }
     }
 
+    free(vector);
+    free(vector_result_global);
+    for (int i = 0; i < num_rows_per_process; i++)
+    {
+        free(matrix[i]);
+    }
+    free(matrix);
+    
     MPI_Finalize();    
 
     return 0;
@@ -118,7 +132,7 @@ void init_vector(int *vector_local, int num_elements_vector_per_process, int ran
 {
     for (int i = 0; i < num_elements_vector_per_process; i++)
     {
-        vector_local[i] = rank * num_elements_vector_per_process;
+        vector_local[i] = rank;
     }
 }
 
