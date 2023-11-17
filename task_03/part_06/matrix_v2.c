@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
     
 
     multiply_matrix_vector(matrix, vector, num_rows_per_process, C, partial_result);
-    prepare_vector(partial_result, num_rows_per_process, num_procs);
+    prepare_vector(partial_result, num_rows_per_process, num_procs); // repeat result for each process
 
     global_result = (int *)malloc(F * sizeof(int));
     MPI_Alltoall(

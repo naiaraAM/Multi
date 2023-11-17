@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2)
+    if (argc != 2) // check if the command line arguments are correct
     {
         fprintf(stderr, "ERROR: Invalid number of arguments.\n");
         fprintf(stderr, "Usage: ./scatter <N>\n");
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
 
-    if (rank == 0)
+    if (rank == 0) // only rank 0 reads the file
     {
         file = fopen(filename, "r");
         if (file == NULL)
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     data = (double *)malloc((100 / num_procs) * sizeof(double));
     MPI_Scatter(send_buff, 100 / num_procs, MPI_DOUBLE, data, 100 / num_procs, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-    for (int i = 0; i < num_procs; i++)
+    for (int i = 0; i < num_procs; i++) // each process prints its data
     {
         if (i == rank)
         {

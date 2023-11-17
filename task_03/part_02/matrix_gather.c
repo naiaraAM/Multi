@@ -10,7 +10,7 @@ void muliply_matrix_vector(int **matrix, int *vector, int num_rows_per_process, 
 
 int main (int argc, char* argv[])
 {
-    if (argc != 3)
+    if (argc != 3) // check if the command line arguments are correct
     {
         perror("ERROR: Invalid number of arguments.\n");
         perror("Usage: ./matrix_gather <C> <F>\n");
@@ -71,6 +71,7 @@ int main (int argc, char* argv[])
     init_vector(vector_local, num_elements_vector_per_process, rank);
     vector = (int*) malloc(C * sizeof(int));
 
+    // Gather the necessary data
     for (int i = 0; i < num_procs; i++)
     {
         MPI_Gather(vector_local, num_elements_vector_per_process, MPI_INT, vector, num_elements_vector_per_process, MPI_INT, i, MPI_COMM_WORLD);
@@ -81,12 +82,12 @@ int main (int argc, char* argv[])
 
     vector_result_global = (int*) malloc(F * sizeof(int));
 
+    // Send partial results
     for (int i = 0; i < num_procs; i++)
     {
         MPI_Gather(vector_result, num_rows_per_process, MPI_INT, vector_result_global, num_rows_per_process, MPI_INT, i, MPI_COMM_WORLD);
     }
     
-
     for (int i = 0; i < num_procs; i++)
     {
         if (i == rank)

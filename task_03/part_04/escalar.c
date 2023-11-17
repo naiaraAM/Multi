@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 
     int global_sum;
 
-    MPI_Reduce(&local_sum, &global_sum, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&local_sum, &global_sum, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD); // send local_sum to rank 0
     if (rank == 0)
     {
         printf("The scalar product is: %d\n", global_sum);

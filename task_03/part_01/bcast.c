@@ -20,7 +20,6 @@ int main(int argc, char* argv[])  {
     float inicio, fin;
     double start_time, fin_time;
 
-
     float buff[3];
 
     MPI_Init(&argc, &argv);
@@ -35,7 +34,7 @@ int main(int argc, char* argv[])  {
         buff[1] = b;
         buff[2] = n;
     }
-    MPI_Bcast(&a, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&a, 1, MPI_FLOAT, 0, MPI_COMM_WORLD); // if rank == root, send data to all processes
     MPI_Bcast(&b, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&n, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
     
