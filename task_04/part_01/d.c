@@ -24,13 +24,13 @@ int main (int argc, char *argv[])
     MPI_Type_indexed(count, blocklengths, displacements, MPI_FLOAT, &with_black_spots);
     MPI_Type_commit(&with_black_spots);
 
-    if(rank == 0)
+    if (rank == 0)
     {
         printf("Initial matrix rank %d\n", rank);
         init_matrix(M_init);
-        for(int i = 0; i < M; i++)
+        for (int i = 0; i < M; i++)
         {
-            for(int j = 0; j < N; j++)
+            for (int j = 0; j < N; j++)
             {
                 printf("[%.0f] ", M_init[i][j]);
             }
@@ -43,7 +43,8 @@ int main (int argc, char *argv[])
                 MPI_Send(&M_init[i][0], 1, with_black_spots, 1, 0, MPI_COMM_WORLD);
             }
         }
-    } else{
+    } else
+    {
         for (int i = 0; i < M; i++)
         {
             if (i % 2 == 0)
@@ -69,12 +70,9 @@ int main (int argc, char *argv[])
             printf("\n");
         }
     }
-    
-    
-
+     
+    MPI_Type_free(&with_black_spots);
     MPI_Finalize();
-
-
     return 0;
 }
 

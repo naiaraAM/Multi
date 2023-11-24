@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
     {
         blocklengths[i] = N - (i % N);
         displacements[i] = i * N + i;
-        printf("blocklengths[%d] = %d, displacements[%d] = %d\n", i, blocklengths[i], i, displacements[i]);
     }
     MPI_Type_indexed(count, blocklengths, displacements, MPI_FLOAT, &triangle);
     MPI_Type_commit(&triangle);
@@ -66,7 +65,6 @@ int main(int argc, char *argv[])
     }
 
     MPI_Type_free(&triangle);
-
     MPI_Finalize();
     return 0;
 }

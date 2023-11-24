@@ -28,11 +28,13 @@ int main(void) {
     MPI_Type_create_struct(2, block_lengths, displacements, types, &particle_type);
     MPI_Type_commit(&particle_type);
 
-    if (rank == 0) {
+    if (rank == 0) // sender
+    {
         particle.a = 1.0;
         particle.b = 'a';
         MPI_Send(&particle, 1, particle_type, 1, 0, MPI_COMM_WORLD);
-    } else if (rank == 1) {
+    } else if (rank == 1) // receiver
+    {
         MPI_Recv(&particle, 1, particle_type, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         printf("Particle a: %.2f\n", particle.a);
         printf("Particle b: %c\n", particle.b);
